@@ -8,18 +8,20 @@ const app = express();
 
 app.use(express.json());
 
-// DB Config
-const uri = require('./config/keys').mongoURI;
+const db = process.env.MONGODB_URL;
 
-// Connect to Mongo
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
-mongoose.connection.on('connected', () => {
-  console.log('Mongoose is connected!');
-});
+const connectDB = async () => {
+  try {
+    await mongoose.connect(db, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true
+    });
+    console.log('MongoDB is Connected...');
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+};
 
 app.use('/api/tasks', tasks);
 
