@@ -13,7 +13,8 @@ const db = require('./config/keys').mongoURI;
 
 // Mongo Options
 const options = {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 };
 
 // Connect to Mongo
