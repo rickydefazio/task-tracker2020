@@ -9,15 +9,15 @@ const app = express();
 app.use(express.json());
 
 // DB Config
-const db = require('./config/keys').mongoURI;
+const uri = require('./config/keys').mongoURI;
 
 // Connect to Mongo
 mongoose
-  .connect(db, {
+  .connect(process.env.MONGODB_URI || uri, {
     useUnifiedTopology: true,
     useNewUrlParser: true
   })
-  .then(() => console.log('MongoDB Connected...'))
+  .then(() => console.log('Successfully connected to MongoDB!'))
   .catch(err => console.log(err));
 
 app.use('/api/tasks', tasks);
