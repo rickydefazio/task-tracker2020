@@ -9,17 +9,18 @@ const app = express();
 app.use(express.json());
 
 // DB Config
-const db = require('./config/keys').mongoURI;
+const uri = require('./config/keys').mongoURI;
 
 // Mongo Options
 const options = {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  dbName: 'task_tracker'
 };
 
 // Connect to Mongo
 mongoose
-  .connect(db, options)
+  .connect(uri, options)
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 
