@@ -8,8 +8,11 @@ const app = express();
 
 app.use(express.json());
 
+// DB Config
+const uri = require('./config/keys').mongoURI;
+
 // Connect to Mongo
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -24,6 +27,10 @@ app.use('/api/tasks', tasks);
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
   app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 }
 
 const port = process.env.PORT || 5000;
