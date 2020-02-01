@@ -9,7 +9,8 @@ const app = express();
 app.use(express.json());
 
 // DB Config
-const uri = require('./config/keys').mongoURI;
+const uri =
+  'mongodb+srv://rdefazio:wVF6fcO8nqYzwfDV@cluster0-vpxrn.mongodb.net/task_tracker?retryWrites=true&w=majority';
 
 // Connect to Mongo
 mongoose
