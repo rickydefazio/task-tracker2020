@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-const config = require('config');
 const tasks = require('./routes/api/tasks');
 const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
@@ -13,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 // DB Config
-// const uri = config.get('mongoURI');
+const uri = 'mongodb://localhost:27017/test';
 
 // Connect to MongoDB
 mongoose
