@@ -6,6 +6,12 @@ import { getTasks, deleteTask } from '../actions/taskActions';
 import PropTypes from 'prop-types';
 
 class TaskList extends Component {
+  static propTypes = {
+    getTasks: PropTypes.func.isRequired,
+    task: PropTypes.object.isRequired,
+    isAuthenticated: PropTypes.bool
+  };
+
   componentDidMount() {
     this.props.getTasks();
   }
@@ -24,14 +30,16 @@ class TaskList extends Component {
             {tasks.map(({ _id, name }) => (
               <CSSTransition key={_id} timeout={500} classNames='fade'>
                 <ListGroupItem>
-                  <Button
-                    className='remove-btn'
-                    color='danger'
-                    size='sm'
-                    onClick={this.onDeleteClick.bind(this, _id)}
-                  >
-                    &times;
-                  </Button>
+                  {this.props.isAuthenticated ? (
+                    <Button
+                      className='remove-btn'
+                      color='danger'
+                      size='sm'
+                      onClick={this.onDeleteClick.bind(this, _id)}
+                    >
+                      &times;
+                    </Button>
+                  ) : null}
                   {name}
                 </ListGroupItem>
               </CSSTransition>
@@ -43,13 +51,9 @@ class TaskList extends Component {
   }
 }
 
-TaskList.propTypes = {
-  getTasks: PropTypes.func.isRequired,
-  task: PropTypes.object.isRequired
-};
-
 const mapStateToProps = state => ({
-  task: state.task
+  task: state.task,
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, { getTasks, deleteTask })(TaskList);

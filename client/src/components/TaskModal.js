@@ -11,11 +11,15 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addTask } from '../actions/taskActions';
+import Proptypes from 'prop-types';
 
 class TaskModal extends Component {
   state = {
     modal: false,
     name: ''
+  };
+  static propTypes = {
+    isAuthenticated: Proptypes.bool
   };
 
   toggle = () => {
@@ -44,20 +48,24 @@ class TaskModal extends Component {
   render() {
     return (
       <div>
-        <Button
-          color='dark'
-          style={{ marginBottom: '2rem' }}
-          onClick={this.toggle}
-        >
-          Add Task
-        </Button>
+        {this.props.isAuthenticated ? (
+          <Button
+            color='dark'
+            style={{ marginBottom: '2rem' }}
+            onClick={this.toggle}
+          >
+            Add Task
+          </Button>
+        ) : (
+          <h4 className='mb-3 ml-4'>Please log in to manage tasks.</h4>
+        )}
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Add to Task List</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for='item'>Task</Label>
+                <Label for='task'>Task</Label>
                 <Input
                   type='text'
                   name='name'
@@ -78,7 +86,8 @@ class TaskModal extends Component {
 }
 
 const mapStateToProps = state => ({
-  task: state.task
+  task: state.task,
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, { addTask })(TaskModal);

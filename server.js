@@ -1,27 +1,34 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-
+const config = require('config');
 const tasks = require('./routes/api/tasks');
+const users = require('./routes/api/users');
+const auth = require('./routes/api/auth');
 
+// Create express app
 const app = express();
 
+// Parse incoming requests with JSON
 app.use(express.json());
 
 // DB Config
-const uri =
-  'mongodb+srv://rdefazio:wVF6fcO8nqYzwfDV@cluster0-vpxrn.mongodb.net/task_tracker?retryWrites=true&w=majority';
+const uri = config.get('mongoURI');
 
-// Connect to Mongo
+// Connect to MongoDB
 mongoose
   .connect(process.env.MONGODB_URI || uri, {
     useUnifiedTopology: true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useCreateIndex: true
   })
   .then(() => console.log('Successfully connected to MongoDB!'))
   .catch(err => console.log(err));
 
+// Routes
 app.use('/api/tasks', tasks);
+app.use('/api/users', users);
+app.use('/api/auth', auth);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
